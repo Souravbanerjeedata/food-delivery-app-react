@@ -1,5 +1,7 @@
 import Categories from "../Category";
+import Card from "../components/Card";
 import Nav from "../components/Nav";
+import { food_items } from "../food";
 
 export default function Home() {
   return (
@@ -14,6 +16,17 @@ export default function Home() {
             {item.image}
             <span>{item.name}</span>
           </div>
+        ))}
+      </div>
+      <div className="w-full flex flex-wrap gap-5 px-5 justify-center items-center pt-8 pb-8">
+        {food_items.map((item) => (
+          <Card
+            key={item.id}
+            food_name={item.food_name}
+            food_type={item.food_type}
+            food_image={item.food_image}
+            price={item.price}
+          />
         ))}
       </div>
     </div>
