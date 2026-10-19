@@ -6,7 +6,7 @@ import { DataContext } from "../context/UserContext";
 import { food_items } from "../food";
 
 export default function Nav() {
-  const { input, setInput, foodList, setFoodList } = useContext(DataContext);
+  const { input, setInput, setFoodList, setShowCart } = useContext(DataContext);
 
   useEffect(() => {
     let newList = food_items.filter((item) =>
@@ -17,7 +17,7 @@ export default function Nav() {
 
   return (
     <div className="w-full h-16 flex justify-between items-center px-8">
-      <div className="w-7 h-7 bg-white flex justify-center items-center rounded-md p-[1%] shadow-md">
+      <div className="w-7 h-7 bg-white flex justify-center items-center rounded-md p-[1%] shadow-md cursor-pointer">
         <IoFastFoodOutline className="w-7.5 h-7.5 text-green-500" />
       </div>
       <form
@@ -33,7 +33,10 @@ export default function Nav() {
           value={input}
         />
       </form>
-      <div className="w-7 h-7 bg-white flex justify-center items-center rounded-md p-[1%] shadow-md relative">
+      <div
+        className="w-7 h-7 bg-white flex justify-center items-center rounded-md p-[1%] shadow-md relative cursor-pointer"
+        onClick={() => setShowCart(true)}
+      >
         <span className="absolute top-0 right-1 text-green-500 font-bold text-[9px]">
           0
         </span>

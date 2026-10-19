@@ -4,9 +4,12 @@ import Card from "../components/Card";
 import Nav from "../components/Nav";
 import { food_items } from "../food";
 import { DataContext } from "../context/UserContext";
+import { IoClose } from "react-icons/io5";
+import CartCard from "../components/CartCard";
 
 export default function Home() {
-  const { foodList, setFoodList, input } = useContext(DataContext);
+  const { foodList, setFoodList, input, showCart, setShowCart } =
+    useContext(DataContext);
 
   function filterFood(category) {
     let loweredcasedCategory = category.toLowerCase();
@@ -48,6 +51,21 @@ export default function Home() {
             price={item.price}
           />
         ))}
+      </div>
+
+      <div
+        className={`w-[40vh] h-[100%] absolute top-0 right-0 bg-white shadow-2xl p-2 transition-all duration-500 ${showCart ? "translate-x-0" : "translate-x-full"}`}
+      >
+        <header className="w-full flex items-center justify-between">
+          <span className="text-green-400 text-[15px] font-semibold">
+            Your order
+          </span>
+          <IoClose
+            className="w-[25px] h-[25px] text-green-400 text-[15px] font-semibold cursor-pointer hover:text-gray-600"
+            onClick={() => setShowCart(false)}
+          />
+        </header>
+        <CartCard />
       </div>
     </div>
   );
