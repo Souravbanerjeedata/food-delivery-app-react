@@ -13,7 +13,10 @@ export default function Home() {
     useContext(DataContext);
   const cartItems = useSelector((state) => state.cart);
 
-  const subtotal = cartItems.reduce((total, item) => total + item.price, 0);
+  const subtotal = cartItems.reduce(
+    (total, item) => total + item.qty * item.price,
+    0,
+  );
 
   const deliveryFee = 20;
   const taxes = (subtotal * 0.5) / 100;
@@ -32,10 +35,10 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen w-full bg-slate-200 px-2">
+    <div className="min-h-screen w-full bg-slate-200">
       <Nav />
       {!input && (
-        <div className="flex flex-wrap justify-center items-center gap-5 w-full">
+        <div className="flex flex-wrap justify-center items-center gap-5 w-full mt-14">
           {Categories.map((item) => (
             <div
               key={item.id}
@@ -49,7 +52,9 @@ export default function Home() {
         </div>
       )}
 
-      <div className="w-full flex flex-wrap gap-5 px-5 justify-center items-center pt-8 pb-8">
+      <div
+        className={`w-full flex flex-wrap gap-5 px-5 justify-center items-center pt-8 pb-8 ${input && "mt-14"}`}
+      >
         {foodList.map((item) => (
           <Card
             key={item.id}
@@ -63,7 +68,7 @@ export default function Home() {
       </div>
 
       <div
-        className={`w-[60vh] h-[100%] fixed top-0 right-0 bg-white shadow-2xl p-2 transition-all duration-500 ${showCart ? "translate-x-0" : "translate-x-full"} flex flex-col justify-start items-center overflow-y-auto`}
+        className={`w-[60vh] h-[100%] fixed top-0 right-0 bg-white shadow-2xl p-2 transition-all duration-500 ${showCart ? "translate-x-0" : "translate-x-full"} flex flex-col justify-start items-center overflow-auto z-20`}
       >
         <header className="w-full flex items-center justify-between">
           <span className="text-green-400 text-[15px] font-semibold">

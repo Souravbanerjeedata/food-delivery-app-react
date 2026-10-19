@@ -18,7 +18,7 @@ export default function Nav() {
   }, [input]);
 
   return (
-    <div className="w-full h-16 flex justify-between items-center px-8">
+    <div className="w-full h-14 flex justify-between items-center px-8 fixed top-0 bg-slate-200 z-10">
       <div className="w-7 h-7 bg-white flex justify-center items-center rounded-md p-[1%] shadow-md cursor-pointer">
         <IoFastFoodOutline className="w-7.5 h-7.5 text-green-500" />
       </div>
