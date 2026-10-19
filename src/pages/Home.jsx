@@ -55,7 +55,7 @@ export default function Home() {
       dispatch(clearCart());
       setShowModal(false);
       setShowCart(false);
-    }, 3000);
+    }, 10000);
     return () => clearTimeout(timer);
   }, [showModal, dispatch, setShowCart]);
 
@@ -86,8 +86,9 @@ export default function Home() {
               <div className="hero-art-ring"></div>
               <img
                 src={
-                  food_items.find((item) => item.food_name === "Chicken Biryani")
-                    ?.food_image
+                  food_items.find(
+                    (item) => item.food_name === "Chicken Biryani",
+                  )?.food_image
                 }
                 alt=""
               />
@@ -104,7 +105,8 @@ export default function Home() {
             </div>
             <div className="hero-footnote">
               <span>01</span> REAL FOOD, BIG FLAVOUR{" "}
-              <span className="footnote-line"></span> {food_items.length}+ dishes
+              <span className="footnote-line"></span> {food_items.length}+
+              dishes
             </div>
           </section>
         )}
@@ -300,5 +302,3 @@ export default function Home() {
     </div>
   );
 }
-
-
