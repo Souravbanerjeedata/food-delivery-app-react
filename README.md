@@ -3,7 +3,9 @@
 A modern, responsive **food ordering web app** built with **React** and **Vite**.  
 Browse dishes by category, search the menu, manage a shopping cart, and place an order — all with a clean, polished UI.
 
-**Repo:** [github.com/Souravbanerjeedata/food-order-app-react](https://github.com/Souravbanerjeedata/food-order-app-react)
+**Live demo:** [food-order-app-react-wheat.vercel.app](https://food-order-app-react-wheat.vercel.app/)
+
+![QuickBite preview](./public/preview.jpg)
 
 ---
 
