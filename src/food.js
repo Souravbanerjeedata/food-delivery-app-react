@@ -1,4 +1,5 @@
 import image1 from "./assets/image1.avif";
+import { extra_food_items } from "./foodExtras.js";
 import image2 from "./assets/image2.avif";
 import image3 from "./assets/image3.avif";
 import image4 from "./assets/image4.avif";
@@ -24,7 +25,7 @@ import image23 from "./assets/image23.avif";
 import image24 from "./assets/image24.avif";
 import image25 from "./assets/image25.avif";
 
-export const food_items = [
+const original_food_items = [
   {
     id: 1,
     food_name: "Pancakes",
@@ -83,6 +84,7 @@ export const food_items = [
     id: 7,
     food_name: "Paneer Butter Masala",
     food_category: "main_course",
+    food_categories: ["main_course", "indian"],
     food_type: "veg",
     food_quantity: 1,
     food_image: image7,
@@ -92,6 +94,7 @@ export const food_items = [
     id: 8,
     food_name: "Chicken Biryani",
     food_category: "main_course",
+    food_categories: ["main_course", "indian"],
     food_type: "non_veg",
     food_quantity: 1,
     food_image: image8,
@@ -164,6 +167,7 @@ export const food_items = [
     id: 16,
     food_name: "Chicken Tikka Masala",
     food_category: "main_course",
+    food_categories: ["main_course", "indian"],
     food_type: "non_veg",
     food_quantity: 1,
     food_image: image16,
@@ -251,3 +255,10 @@ export const food_items = [
     price: 899,
   },
 ];
+
+
+export const food_items = [...original_food_items, ...extra_food_items];
+
+
+
+

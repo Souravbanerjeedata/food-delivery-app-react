@@ -1,50 +1,43 @@
-import { IoFastFoodOutline } from "react-icons/io5";
+import { useContext, useEffect } from "react";
 import { CiSearch } from "react-icons/ci";
 import { GiFoodTruck } from "react-icons/gi";
-import { useContext, useEffect } from "react";
 import { DataContext } from "../context/UserContext";
 import { food_items } from "../food";
 import { useSelector } from "react-redux";
+import brandMark from "../assets/quickbite-mark.svg";
 
 export default function Nav() {
   const { input, setInput, setFoodList, setShowCart } = useContext(DataContext);
-  const cartItem = useSelector((state) => state.cart);
-  const cartTotal = cartItem.reduce((total, item) => total + item.qty, 0);
+  const cartItems = useSelector((state) => state.cart);
+  const cartTotal = cartItems.reduce((total, item) => total + item.qty, 0);
 
   useEffect(() => {
-    let newList = food_items.filter((item) =>
-      item.food_name.toLowerCase().includes(input),
-    );
-    setFoodList(newList);
-  }, [input]);
+    const query = input.trim().toLowerCase();
+    setFoodList(food_items.filter((item) => item.food_name.toLowerCase().includes(query)));
+  }, [input, setFoodList]);
 
   return (
-    <div className="w-full h-14 flex justify-between items-center px-8 fixed top-0 bg-slate-200 z-10">
-      <div className="w-7 h-7 bg-white flex justify-center items-center rounded-md p-[1%] shadow-md cursor-pointer">
-        <IoFastFoodOutline className="w-7.5 h-7.5 text-green-500" />
-      </div>
-      <form
-        className="w-[70%] h-8 bg-white flex items-center px-5 gap-5 rounded-md shadow-md"
-        onSubmit={(e) => e.preventDefault()}
-      >
-        <CiSearch className="text-green-500" />
+    <header className="topbar">
+      <a className="brand" href="#top" aria-label="QuickBite home">
+        <img className="brand-mark" src={brandMark} alt="" />
+        <span>quick<span className="brand-accent">bite</span></span>
+      </a>
+      <form className="search-box" onSubmit={(event) => event.preventDefault()} role="search">
+        <CiSearch aria-hidden="true" />
         <input
-          type="text"
-          placeholder="Search your cravings..."
-          className="w-[100%] outline-none text-[10px]"
-          onChange={(e) => setInput(e.target.value)}
+          type="search"
+          placeholder="Search dishes, cravings, comfort food..."
+          aria-label="Search dishes"
+          onChange={(event) => setInput(event.target.value)}
           value={input}
         />
+        <kbd>⌘ K</kbd>
       </form>
-      <div
-        className="w-7 h-7 bg-white flex justify-center items-center rounded-md p-[1%] shadow-md relative cursor-pointer"
-        onClick={() => setShowCart(true)}
-      >
-        <span className="absolute top-0 right-1 text-green-500 font-bold text-[9px]">
-          {cartTotal}
-        </span>
-        <GiFoodTruck className="w-7.5 h-7.5 text-green-500" />
-      </div>
-    </div>
+      <button className="cart-trigger" type="button" onClick={() => setShowCart(true)} aria-label={`Open cart, ${cartTotal} items`}>
+        <GiFoodTruck aria-hidden="true" />
+        <span>Cart</span>
+        <span className="cart-count">{cartTotal > 99 ? "99+" : cartTotal}</span>
+      </button>
+    </header>
   );
 }

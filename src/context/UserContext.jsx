@@ -8,21 +8,8 @@ function UserContext({ children }) {
   const [foodList, setFoodList] = useState(food_items);
   const [showCart, setShowCart] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  let data = {
-    input,
-    setInput,
-    foodList,
-    setFoodList,
-    showCart,
-    setShowCart,
-    showModal,
-    setShowModal,
-  };
-  return (
-    <div>
-      <DataContext.Provider value={data}>{children}</DataContext.Provider>
-    </div>
-  );
+  const data = { input, setInput, foodList, setFoodList, showCart, setShowCart, showModal, setShowModal };
+  return <DataContext.Provider value={data}>{children}</DataContext.Provider>;
 }
 
 export default UserContext;
