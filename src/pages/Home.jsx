@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Categories from "../Category";
 import Card from "../components/Card";
 import Nav from "../components/Nav";
@@ -6,12 +6,22 @@ import { food_items } from "../food";
 import { DataContext } from "../context/UserContext";
 import { IoClose } from "react-icons/io5";
 import CartCard from "../components/CartCard";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { BsCartX } from "react-icons/bs";
+import { clearCart } from "../redux/cartSlice";
 
 export default function Home() {
-  const { foodList, setFoodList, input, showCart, setShowCart } =
-    useContext(DataContext);
+  const {
+    foodList,
+    setFoodList,
+    input,
+    showCart,
+    setShowCart,
+    showModal,
+    setShowModal,
+  } = useContext(DataContext);
   const cartItems = useSelector((state) => state.cart);
+  const dispatch = useDispatch();
 
   const subtotal = cartItems.reduce(
     (total, item) => total + item.qty * item.price,
@@ -34,6 +44,24 @@ export default function Home() {
     }
   }
 
+  function placeOrder() {
+    if (cartItems.length === 0) return;
+
+    setShowModal(true);
+  }
+
+  // Auto-hide the modal after 2 seconds
+  useEffect(() => {
+    if (!showModal) return;
+
+    const timer = setTimeout(() => {
+      dispatch(clearCart());
+      setShowModal(false);
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, [showModal, dispatch]);
+
   return (
     <div className="min-h-screen w-full bg-slate-200">
       <Nav />
@@ -55,80 +83,119 @@ export default function Home() {
       <div
         className={`w-full flex flex-wrap gap-5 px-5 justify-center items-center pt-8 pb-8 ${input && "mt-14"}`}
       >
-        {foodList.map((item) => {
-          let isInCart = cartItems.find((cartItem) => cartItem.id === item.id);
-          return (
-            <Card
-              key={item.id}
-              id={item.id}
-              food_name={item.food_name}
-              food_type={item.food_type}
-              food_image={item.food_image}
-              price={item.price}
-              cartItem={isInCart}
-            />
-          );
-        })}
+        {foodList.length > 0 ? (
+          foodList.map((item) => {
+            let isInCart = cartItems.find(
+              (cartItem) => cartItem.id === item.id,
+            );
+            return (
+              <Card
+                key={item.id}
+                id={item.id}
+                food_name={item.food_name}
+                food_type={item.food_type}
+                food_image={item.food_image}
+                price={item.price}
+                cartItem={isInCart}
+              />
+            );
+          })
+        ) : (
+          <div className="text-green-500 font-semibold">No Dish Found...</div>
+        )}
       </div>
 
       <div
         className={`w-[60vh] h-[100%] fixed top-0 right-0 bg-white shadow-2xl p-2 transition-all duration-500 ${showCart ? "translate-x-0" : "translate-x-full"} flex flex-col justify-start items-center overflow-auto z-20`}
       >
-        <header className="w-full flex items-center justify-between">
-          <span className="text-green-400 text-[15px] font-semibold">
-            Your order
-          </span>
-          <IoClose
-            className="w-[25px] h-[25px] text-green-400 text-[15px] font-semibold cursor-pointer hover:text-gray-600"
-            onClick={() => setShowCart(false)}
-          />
-        </header>
-        <div className="w-full mt-4 flex flex-col gap-2">
-          {cartItems.map((item) => (
-            <CartCard
-              key={item.id}
-              name={item.name}
-              image={item.image}
-              qty={item.qty}
-              price={item.price}
-              id={item.id}
-            />
-          ))}
-        </div>
-        <div className="w-full border-t-2 border-gray-400 mt-5 flex flex-col gap-1 p-8">
-          <div className="w-full flex justify-between items-center">
-            <span className="text-sm text-gray-600 font-semibold">
-              Subtotal
-            </span>
-            <span className="text-green-400 font-semibold text-sm">
-              Rs {subtotal}/-
-            </span>
+        {cartItems.length > 0 ? (
+          <div className="w-full flex flex-col justify-start items-center">
+            <header className="w-full flex items-center justify-between">
+              <span className="text-green-400 text-[15px] font-semibold">
+                Your order
+              </span>
+              <IoClose
+                className="w-[25px] h-[25px] text-green-400 text-[15px] font-semibold cursor-pointer hover:text-gray-600"
+                onClick={() => setShowCart(false)}
+              />
+            </header>
+            <div className="w-full mt-4 flex flex-col gap-2">
+              {cartItems.map((item) => (
+                <CartCard
+                  key={item.id}
+                  name={item.name}
+                  image={item.image}
+                  qty={item.qty}
+                  price={item.price}
+                  id={item.id}
+                />
+              ))}
+            </div>
+            <div className="w-full border-t-2 border-gray-400 mt-5 flex flex-col gap-1 p-8">
+              <div className="w-full flex justify-between items-center">
+                <span className="text-sm text-gray-600 font-semibold">
+                  Subtotal
+                </span>
+                <span className="text-green-400 font-semibold text-sm">
+                  Rs {subtotal}/-
+                </span>
+              </div>
+              <div className="w-full flex justify-between items-center">
+                <span className="text-sm text-gray-600 font-semibold">
+                  Delivery Fee
+                </span>
+                <span className="text-green-400 font-semibold text-sm">
+                  Rs {deliveryFee}/-
+                </span>
+              </div>
+              <div className="w-full flex justify-between items-center">
+                <span className="text-sm text-gray-600 font-semibold">
+                  Taxes
+                </span>
+                <span className="text-green-400 font-semibold text-sm">
+                  Rs {taxes.toFixed(2)}/-
+                </span>
+              </div>
+              <div className="w-full flex justify-between items-center border-t mt-1">
+                <span className="text-md text-gray-600 font-bold">Total</span>
+                <span className="text-green-400 font-bold text-md">
+                  Rs {total.toFixed(2)}/-
+                </span>
+              </div>
+            </div>
+            <button
+              className="w-[80%] p-2 rounded-lg bg-green-400 text-white hover:bg-green-500 transition-all duration-100 text-xs font-bold cursor-pointer mt-2"
+              onClick={placeOrder}
+            >
+              Place Order
+            </button>
           </div>
-          <div className="w-full flex justify-between items-center">
-            <span className="text-sm text-gray-600 font-semibold">
-              Delivery Fee
-            </span>
-            <span className="text-green-400 font-semibold text-sm">
-              Rs {deliveryFee}/-
-            </span>
+        ) : (
+          <div className="text-xl text-green-500 font-bold mt-[100px] flex flex-col items-center justify-center gap-1">
+            <BsCartX className="w-[100px] h-[100px]" />
+            <h1>Your cart is empty</h1>
+            <p className="text-[10px] font-semibold">
+              Looks like you haven't made your choice yet...
+            </p>
+            <button
+              className="w-full p-2 rounded-lg bg-green-400 text-white hover:bg-green-500 transition-all duration-100 text-xs font-bold cursor-pointer mt-5"
+              onClick={() => setShowCart(false)}
+            >
+              Order
+            </button>
           </div>
-          <div className="w-full flex justify-between items-center">
-            <span className="text-sm text-gray-600 font-semibold">Taxes</span>
-            <span className="text-green-400 font-semibold text-sm">
-              Rs {taxes.toFixed(2)}/-
-            </span>
-          </div>
-          <div className="w-full flex justify-between items-center border-t mt-1">
-            <span className="text-md text-gray-600 font-bold">Total</span>
-            <span className="text-green-400 font-bold text-md">
-              Rs {total.toFixed(2)}/-
-            </span>
-          </div>
-        </div>
-        <button className="w-[80%] p-2 rounded-lg bg-green-400 text-white hover:bg-green-500 transition-all duration-100 text-xs font-bold cursor-pointer mt-2">
-          Place Order
-        </button>
+        )}
       </div>
+
+      {showModal && (
+        <div className="modal-overlay">
+          <div className="modal-content success-modal">
+            <div className="modal-icon">✓</div>
+            <h2 className="modal-title">Your order is placed!</h2>
+            <p className="modal-message">Come again when hungry.</p>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

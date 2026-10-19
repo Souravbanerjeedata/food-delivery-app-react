@@ -1,1 +1,107 @@
 @import "tailwindcss";
+
+:root {
+  --primary: #1a56db;
+  --primary-hover: #1e40af;
+  --primary-light: #eff6ff;
+  --secondary: #64748b;
+  --secondary-hover: #475569;
+  --accent: #0ea5e9;
+  --success: #10b981;
+  --danger: #ef4444;
+  --warning: #f59e0b;
+
+  --bg: #f8fafc;
+  --bg-card: #ffffff;
+  --bg-dark: #0f172a;
+  --text: #1e293b;
+  --text-muted: #64748b;
+  --text-light: #94a3b8;
+  --border: #e2e8f0;
+  --border-focus: #93c5fd;
+
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+  --shadow-md:
+    0 10px 15px -3px rgb(0 0 0 / 0.08), 0 4px 6px -4px rgb(0 0 0 / 0.05);
+  --shadow-lg:
+    0 20px 25px -5px rgb(0 0 0 / 0.08), 0 8px 10px -6px rgb(0 0 0 / 0.05);
+
+  --radius: 12px;
+  --radius-sm: 8px;
+  --radius-full: 9999px;
+
+  --font:
+    "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  --transition: 0.2s ease;
+}
+
+/* ---------- Modal ---------- */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+  padding: 1rem;
+  animation: fadeIn 0.2s ease;
+}
+
+.modal-content {
+  background: var(--bg-card);
+  border-radius: var(--radius);
+  padding: 2.5rem 2rem;
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+  box-shadow: var(--shadow-lg);
+  animation: scaleIn 0.25s ease;
+}
+
+.success-modal .modal-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: #d1fae5;
+  color: var(--success);
+  font-size: 2rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.25rem;
+}
+
+.modal-title {
+  font-size: 1.35rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.modal-message {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
