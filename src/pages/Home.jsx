@@ -55,16 +55,20 @@ export default function Home() {
       <div
         className={`w-full flex flex-wrap gap-5 px-5 justify-center items-center pt-8 pb-8 ${input && "mt-14"}`}
       >
-        {foodList.map((item) => (
-          <Card
-            key={item.id}
-            id={item.id}
-            food_name={item.food_name}
-            food_type={item.food_type}
-            food_image={item.food_image}
-            price={item.price}
-          />
-        ))}
+        {foodList.map((item) => {
+          let isInCart = cartItems.find((cartItem) => cartItem.id === item.id);
+          return (
+            <Card
+              key={item.id}
+              id={item.id}
+              food_name={item.food_name}
+              food_type={item.food_type}
+              food_image={item.food_image}
+              price={item.price}
+              cartItem={isInCart}
+            />
+          );
+        })}
       </div>
 
       <div

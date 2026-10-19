@@ -9,6 +9,7 @@ import { useSelector } from "react-redux";
 export default function Nav() {
   const { input, setInput, setFoodList, setShowCart } = useContext(DataContext);
   const cartItem = useSelector((state) => state.cart);
+  const cartTotal = cartItem.reduce((total, item) => total + item.qty, 0);
 
   useEffect(() => {
     let newList = food_items.filter((item) =>
@@ -40,7 +41,7 @@ export default function Nav() {
         onClick={() => setShowCart(true)}
       >
         <span className="absolute top-0 right-1 text-green-500 font-bold text-[9px]">
-          {cartItem.length}
+          {cartTotal}
         </span>
         <GiFoodTruck className="w-7.5 h-7.5 text-green-500" />
       </div>
