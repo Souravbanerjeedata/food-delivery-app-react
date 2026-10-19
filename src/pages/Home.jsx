@@ -55,7 +55,7 @@ export default function Home() {
       dispatch(clearCart());
       setShowModal(false);
       setShowCart(false);
-    }, 10000);
+    }, 3000);
     return () => clearTimeout(timer);
   }, [showModal, dispatch, setShowCart]);
 
